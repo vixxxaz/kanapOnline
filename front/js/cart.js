@@ -38,14 +38,26 @@ function kanapDisplayCart(data) {
 
     if (!kanapLocalStorage || (kanapLocalStorage.length) === 0) {
 
-        //pour le panier vide
-
+        /** pour le panier vide, ajout d'un message
+         * et d'un lien vers la page d'accueil!
+         */
         const title = document.querySelector("h1");
 
         const votrePanier = document.querySelector(".cart");
 
-        title.textContent = "votre panier est vide";
+        let link = document.createElement('a');
 
+        title.appendChild(link);
+
+        link.href = `http://127.0.0.1:5501/P5-Dev-Web-Kanap/front/html/index.html`;
+
+        link.textContent = "Votre panier est vide, cliquez ici !";
+
+        // Enleve la décoration du lien
+        link.style.color = "white";
+        link.style.textDecoration = "none";
+
+        //fait disparaitre le reste de la page si le panier est vide 
         votrePanier.style.display = "none";
 
         // sinon
@@ -150,7 +162,7 @@ function kanapDisplayCart(data) {
             kanapDelete.className = "deleteItem";
             kanapDelete.innerHTML = "Supprimer";
 
-            deleteProduct();
+
 
             for (const dataElet of data) {
                 if (dataElet._id === kanapLocalStorage[i].Id) {
@@ -161,6 +173,7 @@ function kanapDisplayCart(data) {
             document.getElementById("totalPrice").innerHTML = priceTotalKanap;
 
         }
+        deleteProduct();
     }
 }
 
