@@ -113,9 +113,8 @@ function addToCart(data) {
             //recupere le choix de la quantity
             let quantityChoice = quantityChosen.value;
 
-            let kanapfound = false;
-            let position = 0;
-            let add = true;
+            let kanapFound = false;
+
 
             // Crée les options en un objet avec les choix de l'utilisateur et les données du produit de l'api
             var optionsKanap = {
@@ -135,63 +134,46 @@ function addToCart(data) {
              */
             if (kanapLocalStorage) {
 
-                //Crée une boucle dans le localstorage
-                for (let i = 0; i < (kanapLocalStorage.length); i++) {
-
-                    /*si l'id du produit est la même que celle dans le localstorage 
-                    et la couleur et la même 
-                    */
-                    if (optionsKanap.Id === kanapLocalStorage[i].Id &&
-                        optionsKanap.colorKanap === kanapLocalStorage[i].colorKanap) {
-
-                        /* Si la quantité choisi dans les options plus la quantité dans le loclstorage et superieur à  100 envois 
-                        un message d'erreur  */
-                        if (optionsKanap.quantityKanap + kanapLocalStorage[i].quantityKanap > 100) {
-
-                            alert("Impossible d\'ajouter ce produit car limité à 100 ");
-
-                            add = false;
-
-                        } else {
-
-                            kanapfound = true;
-                            position = i;
-                            break;
-                        }
-
-                    }
-                }
                 //crée le resultat en allant chercher en fonction de l id et de la couleur
                 let resultFind = kanapLocalStorage.find(
                     (el) => el.Id === optionsKanap.Id && el.colorKanap === optionsKanap.colorKanap
                 );
 
                 //si le panier à déjà un article
-                if (resultFind && add === true) {
+                if (resultFind) {
                     //crée un nouvelle quantité en additionnant les options ajouté et le resultat ci dessus
                     let newQuantity =
                         parseInt(optionsKanap.quantityKanap) + parseInt(resultFind.quantityKanap);
                     resultFind.quantityKanap = newQuantity;
+                    kanapFound = true;
 
-                    // ajoute la nouvelle quantité dans le localstorage
-                    localStorage.setItem("cart", JSON.stringify(kanapLocalStorage));
+                    //Si le resultat trouvé est superieur à 100
+                    if (parseInt(resultFind.quantityKanap) > 100) {
+                        alert("Impossible d\'ajouter ce produit car limité à 100 ");
+                        kanapFound = false;
 
-                    // si et sinon le produit est deja dans le panier
-                } else if (add === true) {
+                    }
+
+                    if ((parseInt(resultFind.quantityKanap) <= 100) && (kanapFound === true)) {
+                        // ajoute la nouvelle quantité dans le localstorage
+                        localStorage.setItem("cart", JSON.stringify(kanapLocalStorage));
+                        popUpComfirmation()
+                    }
+
+                    // sinon ajoute le produit 
+                } else {
                     kanapLocalStorage.push(optionsKanap);
+                    localStorage.setItem("cart", JSON.stringify(kanapLocalStorage));
+                    popUpComfirmation()
                 }
 
                 //sinon ajoute les options au localstorage vide   
             } else {
                 kanapLocalStorage = [];
                 kanapLocalStorage.push(optionsKanap);
+                localStorage.setItem("cart", JSON.stringify(kanapLocalStorage));
+                popUpComfirmation()
             }
-
-            localStorage.setItem("cart", JSON.stringify(kanapLocalStorage));
-
-            //affiche le message de confirmation
-            popUpComfirmation()
         }
     });
-
 }

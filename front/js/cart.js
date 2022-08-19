@@ -49,7 +49,7 @@ function kanapDisplayCart(data) {
 
         title.appendChild(link);
 
-        link.href = `http://127.0.0.1:5501/P5-Dev-Web-Kanap/front/html/index.html`;
+        link.href = `./index.html`;
 
         link.textContent = "Votre panier est vide, cliquez ici !";
 
@@ -62,6 +62,7 @@ function kanapDisplayCart(data) {
 
         // sinon
     } else {
+
         for (let i = 0; i < kanapLocalStorage.length; i++) {
 
             let kanapArticle = document.createElement("article");
@@ -139,16 +140,28 @@ function kanapDisplayCart(data) {
             addKanapQuantity.setAttribute("min", "1");
             addKanapQuantity.setAttribute("max", "100");
 
+
+
             addKanapQuantity.addEventListener("change", (e) => {
                 e.preventDefault();
 
                 for (const k of kanapLocalStorage) {
+
                     if (kanapLocalStorage[i].Id === k.Id && kanapLocalStorage[i].colorKanap === k.colorKanap) {
+
+                        priceTotalKanap -= kanapLocalStorage[i].quantityKanap * parseInt(kanapPrice.textContent);
+
                         kanapLocalStorage[i].quantityKanap = parseInt(addKanapQuantity.value);
+
                         localStorage.setItem("cart", JSON.stringify(kanapLocalStorage));
-                        location.reload();
+
+                        priceTotalKanap += parseInt(kanapPrice.textContent) * kanapLocalStorage[i].quantityKanap;
+
+                        document.getElementById("totalPrice").innerHTML = priceTotalKanap;
+
                     }
                 }
+
             })
 
             //ajout de la div du button supprimer
@@ -162,20 +175,21 @@ function kanapDisplayCart(data) {
             kanapDelete.className = "deleteItem";
             kanapDelete.innerHTML = "Supprimer";
 
-
+            deleteProduct();
 
             for (const dataElet of data) {
+
                 if (dataElet._id === kanapLocalStorage[i].Id) {
+
                     priceTotalKanap += dataElet.price * kanapLocalStorage[i].quantityKanap;
                 }
 
             }
             document.getElementById("totalPrice").innerHTML = priceTotalKanap;
-
         }
-        deleteProduct();
     }
 }
+document.getElementById("totalPrice").innerHTML = priceTotalKanap;
 
 document.getElementById("totalQuantity").textContent = kanapLocalStorage.length;
 
@@ -211,7 +225,7 @@ let formulaire = document.querySelector(".cart__order__form");
 
 
 // crée variable associer au regex qui controle les entrées correct
-var addressReg = new RegExp("^[A-zÀ-ú0-9 ,.'\-]+$");
+var addressReg = new RegExp("^[a-z0-9][a-z '-.,]{1,31}$|^$");
 var nameReg = new RegExp("^[A-zÀ-ú \-]+$");
 var emailReg = new RegExp("^[a-zA-Z0-9_. -]+@[a-zA-Z.-]+[.]{1}[a-z]{2,10}$");
 
@@ -358,7 +372,7 @@ btnOrder.addEventListener("click", (event) => {
         };
 
         //va chercher l'api et les données
-        fetch("https://kanapttemarque.herokuapp.com/api/products/order", options)
+        fetch("http://localhost:3000/api/products/order", options)
 
         .then((response) => response.json())
 
