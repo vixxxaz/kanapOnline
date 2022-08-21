@@ -53,7 +53,7 @@ function kanapDisplayCart(data) {
 
         link.textContent = "Votre panier est vide, cliquez ici !";
 
-        // Enleve la décoration du lien
+        // Enleve la décoration du lien et donne la couleur blanche au texte
         link.style.color = "white";
         link.style.textDecoration = "none";
 
@@ -107,6 +107,7 @@ function kanapDisplayCart(data) {
             let kanapPrice = document.createElement("p");
             kanapDivDescription.appendChild(kanapPrice);
 
+            //parcour le localstorage en comparant les id pour 
             for (let kPrice of data) {
 
                 if (kanapLocalStorage[i].Id === kPrice._id) {
@@ -141,14 +142,16 @@ function kanapDisplayCart(data) {
             addKanapQuantity.setAttribute("max", "100");
 
 
-
+            //Ecoute le changement de quantité dans l'input
             addKanapQuantity.addEventListener("change", (e) => {
                 e.preventDefault();
 
                 for (const k of kanapLocalStorage) {
 
+                    //Compare les id et la couleur
                     if (kanapLocalStorage[i].Id === k.Id && kanapLocalStorage[i].colorKanap === k.colorKanap) {
 
+                        //calcul le prix total quand je change les quantitées
                         priceTotalKanap -= kanapLocalStorage[i].quantityKanap * parseInt(kanapPrice.textContent);
 
                         kanapLocalStorage[i].quantityKanap = parseInt(addKanapQuantity.value);
@@ -158,6 +161,17 @@ function kanapDisplayCart(data) {
                         priceTotalKanap += parseInt(kanapPrice.textContent) * kanapLocalStorage[i].quantityKanap;
 
                         document.getElementById("totalPrice").innerHTML = priceTotalKanap;
+
+                        //calcule la quanttité de kanap quand je change les quantité pour afficher à cotés du prix
+                        let totalKanap = 0;
+
+                        for (let y = 0; y < kanapLocalStorage.length; y++) {
+
+                            totalKanap += parseInt(kanapLocalStorage[y].quantityKanap);
+
+                            document.getElementById("totalQuantity").textContent = totalKanap;
+
+                        }
 
                     }
                 }
@@ -176,6 +190,7 @@ function kanapDisplayCart(data) {
             kanapDelete.innerHTML = "Supprimer";
 
             deleteProduct();
+            //calacule le prix totale
 
             for (const dataElet of data) {
 
@@ -186,13 +201,30 @@ function kanapDisplayCart(data) {
 
             }
             document.getElementById("totalPrice").innerHTML = priceTotalKanap;
+
         }
     }
 }
+
+// Ajoute le total d'article à cotés du prix 
+let totalKanap = 0;
+
+for (let z = 0; z < kanapLocalStorage.length; z++) {
+
+    totalKanap += parseInt(kanapLocalStorage[z].quantityKanap);
+
+    document.getElementById("totalQuantity").textContent = totalKanap;
+
+}
+
+
+//insert le prix total
 document.getElementById("totalPrice").innerHTML = priceTotalKanap;
 
-document.getElementById("totalQuantity").textContent = kanapLocalStorage.length;
+//insert la quantité d'article
+// document.getElementById("totalQuantity").textContent = totalKanap;
 
+//function supprimer un produit 
 function deleteProduct() {
 
     let btnDelete = document.querySelectorAll(".deleteItem");
