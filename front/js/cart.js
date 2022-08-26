@@ -192,7 +192,7 @@ function kanapDisplayCart(data) {
             kanapDelete.className = "deleteItem";
             kanapDelete.innerHTML = "Supprimer";
 
-            deleteProduct();
+
             //calcule le prix totale
 
             for (const dataElet of data) {
@@ -206,6 +206,7 @@ function kanapDisplayCart(data) {
             document.getElementById("totalPrice").innerHTML = priceTotalKanap;
 
         }
+        deleteProduct();
     }
 };
 
