@@ -1,5 +1,5 @@
 // je vais chercher l'adresse de l'api
-const api = "https://kanapttemarque.herokuapp.com/api/products";
+const api = "https://api-kanap.onrender.com/api/products";
 
 // je crée url qui va chercher la page
 let url = new URL(window.location.href);
