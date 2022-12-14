@@ -3,7 +3,7 @@
 //fonction qui va chercher les données de l 'api :
 
 async function getKanap() {
-    var kanapData = await fetch("https://kanapttemarque.herokuapp.com/api/products");
+    var kanapData = await fetch("https://api-kanap.onrender.com/api/products");
     return await kanapData.json();
 };
 
