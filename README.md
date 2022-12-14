@@ -1,2 +1,2 @@
 # kanapOnline
-mon premier site en js ,developper pour la formayion web dev open class room 
+mon premier site en js ,developpé pour la formation web dev open class room 
