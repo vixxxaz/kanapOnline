@@ -1,4 +1,4 @@
-const api = "https://kanapttemarque.herokuapp.com/api/products";
+const api = "https://api-kanap.onrender.com/api/products";
 
 let url = new URL(window.location.href);
 
